@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cinemavillage/screens/signIn_screen.dart';
+import 'package:cinemavillage/reusable_widgets/bottom_menu_bar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 241, 81, 37)),
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 241, 81, 37)),
         useMaterial3: true,
       ),
       home: const SignInScreen(),

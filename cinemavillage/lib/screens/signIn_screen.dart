@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cinemavillage/reusable_widgets/reusable_widget.dart';
-import 'package:cinemavillage/screens/home_screen.dart';
+import 'package:cinemavillage/reusable_widgets/bottom_menu_bar.dart';
+import 'package:cinemavillage/screens/Main_page.dart';
 import 'package:cinemavillage/screens/sinUp_screen.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -19,42 +20,41 @@ class _SignInScreenState extends State<SignInScreen> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [
-          Color.fromARGB(255, 241, 81, 37), 
+        decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [
+          Color.fromARGB(255, 241, 81, 37),
           const Color.fromARGB(255, 25, 25, 25)
-          ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
-          child: SingleChildScrollView(
+        ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+        child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.fromLTRB(
                 20, MediaQuery.of(context).size.height * 0.2, 20, 0),
             child: Column(
               children: <Widget>[
                 logoWidget("assets/images/Cinema_village_2.png"),
-                reusableTextField("Your username", Icons.person_outline, false, _emailTextController),
+                reusableTextField("Your username", Icons.person_outline, false,
+                    _emailTextController),
                 SizedBox(
                   height: 20,
                 ),
-                reusableTextField("Password", Icons.lock_outline, true, _passwordTextController),
+                reusableTextField("Password", Icons.lock_outline, true,
+                    _passwordTextController),
                 SizedBox(
                   height: 20,
                 ),
                 singInSingUpButton(context, true, () {
-                  Navigator.push(context, 
-                  MaterialPageRoute(builder: (context) => HomeScreen()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Main_screen()));
                 }),
                 signUpOption(),
-                
-                
-                
               ],
             ),
           ),
         ),
       ),
-       
     );
   }
+
   Row signUpOption() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -74,7 +74,4 @@ class _SignInScreenState extends State<SignInScreen> {
       ],
     );
   }
-  
-  
-
 }
