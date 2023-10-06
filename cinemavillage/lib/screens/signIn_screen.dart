@@ -36,8 +36,6 @@ class _SignInScreenState extends State<SignInScreen> {
                 logoWidget("assets/images/Cinema_village_2.png"),
                 reusableTextField("Your username", Icons.person_outline, false,
                     _emailTextController),
-                reusableTextField("Your email", Icons.person_outline, false,
-                    _emailTextController),
                 SizedBox(
                   height: 20,
                 ),
