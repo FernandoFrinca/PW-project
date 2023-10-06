@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cinemavillage/reusable_widgets/reusable_widget.dart';
 import 'package:cinemavillage/reusable_widgets/bottom_menu_bar.dart';
@@ -34,6 +36,8 @@ class _SignInScreenState extends State<SignInScreen> {
                 logoWidget("assets/images/Cinema_village_2.png"),
                 reusableTextField("Your username", Icons.person_outline, false,
                     _emailTextController),
+                reusableTextField("Your email", Icons.person_outline, false,
+                    _emailTextController),
                 SizedBox(
                   height: 20,
                 ),
@@ -45,6 +49,16 @@ class _SignInScreenState extends State<SignInScreen> {
                 singInSingUpButton(context, true, () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Main_screen()));
+                  FirebaseAuth.instance
+                      .signInWithEmailAndPassword(
+                          email: _emailTextController.text,
+                          password: _passwordTextController.text)
+                      .then((value) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Main_screen()));
+                  }).onError((error, stackTrace) {
+                    print("Error ${error.toString()}");
+                  });
                 }),
                 signUpOption(),
               ],

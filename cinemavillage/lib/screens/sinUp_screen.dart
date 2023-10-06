@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cinemavillage/reusable_widgets/reusable_widget.dart';
 import 'package:cinemavillage/screens/Main_page.dart';
@@ -50,7 +51,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                reusableTextField("Enter Email Id", Icons.person_outline, false,
+                reusableTextField("Enter Email", Icons.person_outline, false,
                     _emailTextController),
                 const SizedBox(
                   height: 20,
@@ -61,8 +62,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: 20,
                 ),
                 singInSingUpButton(context, false, () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Main_screen()));
+                  FirebaseAuth.instance
+                      .createUserWithEmailAndPassword(
+                          email: _emailTextController.text,
+                          password: _passwordTextController.text)
+                      .then((value) {
+                    print("Created New Account");
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Main_screen()));
+                  }).onError((error, stackTrace) {
+                    print("Error ${error.toString()}");
+                  });
                 })
               ],
             ),
