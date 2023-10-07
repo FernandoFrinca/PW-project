@@ -10,7 +10,6 @@ class _NavigationBar extends StatefulWidget {
 }
 
 class NavigationBarState extends State<_NavigationBar> {
-  @override
   int _selectedIndex = 1;
   List<Widget> _widgetOptions = <Widget>[
     Home_screen(),
@@ -23,6 +22,7 @@ class NavigationBarState extends State<_NavigationBar> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(

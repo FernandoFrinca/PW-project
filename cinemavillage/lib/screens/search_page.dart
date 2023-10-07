@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:cinemavillage/reusable_widgets/reusable_widget.dart';
+import 'package:flutter/material.dart';
 
 class Search_Screen extends StatefulWidget {
   const Search_Screen({super.key});
@@ -8,9 +8,12 @@ class Search_Screen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<Search_Screen> {
+  @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Center(child: Text('Search')),
+      body: Top_bar(screenHeight, screenWidth),
     );
   }
 }

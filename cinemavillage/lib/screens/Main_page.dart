@@ -9,7 +9,6 @@ class Main_screen extends StatefulWidget {
 }
 
 class MainPage extends State<Main_screen> {
-  @override
   int _selectedIndex = 1;
   List<Widget> _widgetOptions = <Widget>[
     Search_Screen(),
@@ -22,6 +21,7 @@ class MainPage extends State<Main_screen> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
@@ -32,7 +32,7 @@ class MainPage extends State<Main_screen> {
         currentIndex: _selectedIndex,
         onTap: _onItemTap,
         backgroundColor: Color.fromARGB(255, 25, 25, 25),
-        unselectedItemColor: Color.fromARGB(255, 98, 125, 98),
+        unselectedItemColor: Color.fromARGB(255, 227, 232, 227),
         selectedItemColor: Color.fromARGB(255, 241, 100, 37),
         iconSize: 30,
         selectedFontSize: 15,
