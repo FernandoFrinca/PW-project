@@ -1,13 +1,17 @@
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
-Image logoWidget(String imageName) {
-    return Image.asset(
-      imageName, 
-      fit: BoxFit.fitWidth, 
-      width: 300, 
-      height: 240, 
-      color: Colors.white,
-      );
+Image logoWidget(String imageName, dynamic widthIn, dynamic heightIn) {
+  int VariableWidthIn = widthIn;
+  int VariableHeighIn = heightIn;
+  return Image.asset(
+    imageName,
+    fit: BoxFit.fitWidth,
+    //300
+    width: VariableWidthIn.toDouble(),
+    //240
+    height: VariableHeighIn.toDouble(),
+    color: Colors.white,
+  );
 }
 
 TextField reusableTextField(String text, IconData icon, bool isPasswordType,
@@ -68,30 +72,54 @@ Container firebaseUIButton(BuildContext context, String title, Function onTap) {
 }
 
 Container singInSingUpButton(
-  BuildContext context, bool isLogin, Function onTap){
-    return Container(
-      width: MediaQuery.of(context).size.width/2,
-      height: 50,
-      margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
-      child: ElevatedButton(
-        onPressed: (){
-          onTap();
-        },
+    BuildContext context, bool isLogin, Function onTap) {
+  return Container(
+    width: MediaQuery.of(context).size.width / 2,
+    height: 50,
+    margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
+    decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
+    child: ElevatedButton(
+      onPressed: () {
+        onTap();
+      },
       child: Text(
         isLogin ? 'LOG IN' : 'SIGN UP',
         style: const TextStyle(
-          color:  Color.fromARGB(221, 52, 52, 52), fontWeight: FontWeight.bold, fontSize: 16),
+            color: Color.fromARGB(221, 52, 52, 52),
+            fontWeight: FontWeight.bold,
+            fontSize: 16),
       ),
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.pressed)) {
-            return Colors.black26;
-          }
-          return Colors.white;
-        }),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)))),
-      ),
-    );
-  }
+          backgroundColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.pressed)) {
+              return Colors.black26;
+            }
+            return Colors.white;
+          }),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)))),
+    ),
+  );
+}
+
+Scaffold Top_bar(dynamic screenHeight, dynamic screenWidth) {
+  var screenH = screenHeight;
+  var screenW = screenWidth;
+  return Scaffold(
+    body: Column(children: [
+      Container(
+        child: Padding(
+            padding: EdgeInsets.only(left: 20.0, top: 55.0, bottom: 0),
+            child: logoWidget("assets/images/Cinema_village_2.png", 63, 80)),
+        alignment: Alignment.bottomLeft,
+        height: screenH.toDouble() / 8.3,
+        width: screenW.toDouble(),
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(30),
+            ),
+            color: Color.fromARGB(255, 25, 25, 25)),
+      )
+    ]),
+  );
+}
