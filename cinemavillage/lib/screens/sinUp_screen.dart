@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cinemavillage/reusable_widgets/reusable_widget.dart';
 import 'package:cinemavillage/screens/Main_page.dart';
+//import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -14,6 +16,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
   TextEditingController _userNameTextController = TextEditingController();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  Future addUserDetails(
+    String mail,
+    String pass,
+    String user_name,
+    String _uid,
+  ) async {
+    await FirebaseFirestore.instance.collection('users').doc(_uid).set({
+      'email': mail,
+      'password': pass,
+      'username': user_name,
+      'uID': _uid,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,11 +80,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: 20,
                 ),
                 singInSingUpButton(context, false, () {
-                  FirebaseAuth.instance
+                  _auth
                       .createUserWithEmailAndPassword(
                           email: _emailTextController.text,
                           password: _passwordTextController.text)
                       .then((value) {
+                    final User? user = _auth.currentUser;
+                    final _uid = user!.uid;
+                    addUserDetails(
+                        _emailTextController.text.trim(),
+                        _passwordTextController.text.trim(),
+                        _userNameTextController.text.trim(),
+                        _uid);
                     print("Created New Account");
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Main_screen()));
