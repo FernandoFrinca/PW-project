@@ -1,9 +1,9 @@
 import 'package:cinemavillage/reusable_widgets/reusable_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cinemavillage/functionality/get_data.dart';
+import 'package:cinemavillage/screens/signIn_screen.dart';
+import 'package:cinemavillage/screens/edit_page.dart';
 
 class Profile_screen extends StatefulWidget {
   const Profile_screen({super.key});
@@ -15,19 +15,9 @@ class Profile_screen extends StatefulWidget {
 class _Profile_screenState extends State<Profile_screen> {
   String? name = '';
   String? email = '';
-  DateTime date_time = DateTime.now();
-  void _showDatePicker() {
-    showDatePicker(
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-      context: context,
-    ).then((value) {
-      setState(() {
-        date_time = value!;
-      });
-    });
-  }
+  String? gender = '';
+  Timestamp? date_time = null;
+  DateTime? birthday = null;
 
   Future _getDataFromDatabase() async {
     await FirebaseFirestore.instance
@@ -39,6 +29,9 @@ class _Profile_screenState extends State<Profile_screen> {
         setState(() {
           name = snapshot.data()!["username"];
           email = snapshot.data()!["email"];
+          gender = snapshot.data()!["gender"];
+          date_time = snapshot.data()!["birthday"];
+          birthday = date_time?.toDate();
         });
       }
     });
@@ -51,8 +44,6 @@ class _Profile_screenState extends State<Profile_screen> {
   }
 
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Column(
         children: [
@@ -80,18 +71,21 @@ class _Profile_screenState extends State<Profile_screen> {
                         ),
                       ],
                     ),
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(
-                          width: 120,
-                          height: 120,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(400),
-                            child: Image.asset(
-                                fit: BoxFit.cover,
-                                "assets/images/fernando.png"),
-                          ), // aici vine cu api imagine adaugata
+                        Stack(
+                          children: [
+                            CircleAvatar(
+                              radius: 70,
+                              backgroundColor: Colors.black54,
+                              child: CircleAvatar(
+                                radius: 64,
+                                backgroundImage:
+                                    AssetImage("assets/images/fernando.png"),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -99,71 +93,86 @@ class _Profile_screenState extends State<Profile_screen> {
                       height: 40,
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const SizedBox(
                           width: 20,
                         ),
-                        printText(name!, Icons.person_outline, 340)
+                        printText(name!, Icons.person_outline, 335, 50),
                       ],
                     ),
                     const SizedBox(
                       height: 20,
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const SizedBox(
                           width: 20,
                         ),
-                        printText(email!, Icons.email_outlined, 340)
+                        printText(email!, Icons.email_outlined, 335, 50),
                       ],
                     ),
                     const SizedBox(
                       height: 20,
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const SizedBox(
                           width: 20,
                         ),
                         printText(
-                            '${date_time.day}/${date_time.month}/${date_time.year}',
+                            '${birthday?.day}/${birthday?.month}/${birthday?.year}',
                             Icons.calendar_month_outlined,
-                            200),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Center(
-                          child: Container(
-                            height: 50,
-                            width: 130,
-                            child: MaterialButton(
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              onPressed: _showDatePicker,
-                              color: Colors.white38,
-                              child: const Padding(
-                                padding: EdgeInsets.all(5),
-                                child: Text(
-                                  'choose date',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                            335,
+                            50),
                       ],
                     ),
                     const SizedBox(
                       height: 20,
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const SizedBox(
                           width: 20,
                         ),
-                        printText("gender", Icons.person_outline, 200)
+                        printText(
+                            gender!, Icons.people_outline_outlined, 335, 50)
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 80,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              minimumSize: Size(130, 40)),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Edit_screen()));
+                          },
+                          child: Text('Edit Profile'),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        ElevatedButton(
+                          child: Text("Logout"),
+                          style: ElevatedButton.styleFrom(
+                              minimumSize: Size(130, 40)),
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignInScreen()));
+                          },
+                        ),
                       ],
                     ),
                   ],
@@ -176,94 +185,3 @@ class _Profile_screenState extends State<Profile_screen> {
     );
   }
 }
-
-/*
-                   const SizedBox(
-                      height: 40,
-                    ),
-                    printText(name!, Icons.person_outline),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    printText(email!, Icons.email),
-                    const SizedBox(
-                      height: 20,
-                      ),
-SizedBox(
-                      width: 200,
-                      child: reusablePrintTextField(
-                          "Birthday", Icons.calendar_month_sharp),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                      width: 200,
-                      child: reusablePrintTextField(
-                          "Gender", Icons.calendar_month_sharp),
-                    
-                    
-                    
-                    
-                     Scaffold(
-                      body: MaterialButton(
-                        onPressed: _showDatePicker,
-                        color: Colors.black,
-                        child: const Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Text(
-                            'choose Date',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    
-                    
-                    
-                    
-                    ),
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    Row(
-                      children: [
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Container(
-                          width: 340,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.white54,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Row(
-                            children: [
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Icon(Icons.person_outline, color: Colors.black),
-                              Text(
-                                name.toString(),
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),*/

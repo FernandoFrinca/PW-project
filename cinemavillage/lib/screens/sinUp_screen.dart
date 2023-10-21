@@ -16,19 +16,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
   TextEditingController _userNameTextController = TextEditingController();
-
+  DateTime _date_time = DateTime.now();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   Future addUserDetails(
     String mail,
     String pass,
     String user_name,
     String _uid,
+    DateTime _birthday,
+    String _gender,
   ) async {
     await FirebaseFirestore.instance.collection('users').doc(_uid).set({
       'email': mail,
       'password': pass,
       'username': user_name,
       'uID': _uid,
+      'birthday': _birthday,
+      'gender': _gender,
     });
   }
 
@@ -51,14 +55,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               gradient: LinearGradient(colors: [
             Color.fromARGB(255, 241, 81, 37),
-            const Color.fromARGB(255, 25, 25, 25)
+            Color.fromARGB(255, 25, 25, 25)
           ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
           child: SingleChildScrollView(
               child: Padding(
-            padding: EdgeInsets.fromLTRB(20, 120, 20, 0),
+            padding: const EdgeInsets.fromLTRB(20, 120, 20, 0),
             child: Column(
               children: <Widget>[
                 const SizedBox(
@@ -91,7 +95,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         _emailTextController.text.trim(),
                         _passwordTextController.text.trim(),
                         _userNameTextController.text.trim(),
-                        _uid);
+                        _uid,
+                        _date_time,
+                        'none');
                     print("Created New Account");
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Main_screen()));

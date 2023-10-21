@@ -43,9 +43,11 @@ TextField reusableTextField(String text, IconData icon, bool isPasswordType,
   );
 }
 
-TextField reusablePrintTextField(String text, IconData icon) {
+TextField updateText(
+    String text, IconData icon, TextEditingController controller) {
   return TextField(
-    enabled: false,
+    controller: controller,
+    cursorColor: Colors.white,
     style: TextStyle(color: Colors.white.withOpacity(0.9)),
     decoration: InputDecoration(
       prefixIcon: Icon(
@@ -59,15 +61,16 @@ TextField reusablePrintTextField(String text, IconData icon) {
       fillColor: Colors.white.withOpacity(0.3),
       border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),
-          borderSide: const BorderSide(width: 10, style: BorderStyle.none)),
+          borderSide: const BorderSide(width: 0, style: BorderStyle.none)),
     ),
   );
 }
 
-Container printText(String text, IconData icon, double containerWidth) {
+Container printText(
+    String text, IconData icon, double containerWidth, double containerHeight) {
   return Container(
     width: containerWidth,
-    height: 50,
+    height: containerHeight,
     decoration: BoxDecoration(
       color: Colors.white38,
       borderRadius: BorderRadius.circular(20),
@@ -193,3 +196,40 @@ Container Top_bar_black(dynamic screenHeight, dynamic screenWidth) {
     ]),
   );
 }
+/*
+void _showImageDialog(){
+  showDialog(context: context, builder: (context){
+    return AlertDialog(
+      title: const Text("Choose an option:"),
+      content: Column(
+        mainAxisAlignment: MainAxisSize.min,
+        children: [
+          InkWell(
+            onTap: () {
+              _getFromCamera();
+            },
+            child: const Row(
+              children: [
+                Padding(padding: EdgeInsets.all(4),child: Icon(Icons.camera,color: Colors.black,),),
+                Text("Camera", style: TextStyle(color: Colors.black),),
+              ],
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              _getFromGallery();
+            },
+            child: const Row(
+              children: [
+                Padding(padding: EdgeInsets.all(4),child: Icon(Icons.image,color: Colors.black,),),
+                Text("Gallery", style: TextStyle(color: Colors.black),),
+              ],
+            ),
+          ),
+        ],
+      ),
+    )
+  }
+  )
+}
+*/
