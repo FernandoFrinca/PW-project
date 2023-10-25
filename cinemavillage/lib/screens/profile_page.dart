@@ -18,6 +18,7 @@ class _Profile_screenState extends State<Profile_screen> {
   String? gender = '';
   Timestamp? date_time = null;
   DateTime? birthday = null;
+  String? image = '';
 
   Future _getDataFromDatabase() async {
     await FirebaseFirestore.instance
@@ -32,6 +33,7 @@ class _Profile_screenState extends State<Profile_screen> {
           gender = snapshot.data()!["gender"];
           date_time = snapshot.data()!["birthday"];
           birthday = date_time?.toDate();
+          image = snapshot.data()!["userImage"];
         });
       }
     });
@@ -71,7 +73,7 @@ class _Profile_screenState extends State<Profile_screen> {
                         ),
                       ],
                     ),
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Stack(
@@ -81,8 +83,7 @@ class _Profile_screenState extends State<Profile_screen> {
                               backgroundColor: Colors.black54,
                               child: CircleAvatar(
                                 radius: 64,
-                                backgroundImage:
-                                    AssetImage("assets/images/fernando.png"),
+                                backgroundImage: NetworkImage(image!),
                               ),
                             ),
                           ],

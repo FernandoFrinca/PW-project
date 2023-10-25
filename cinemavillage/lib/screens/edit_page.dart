@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:cinemavillage/screens/Main_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cinemavillage/reusable_widgets/reusable_widget.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Edit_screen extends StatefulWidget {
   const Edit_screen({super.key});
@@ -13,13 +17,30 @@ class Edit_screen extends StatefulWidget {
 
 class _Edit_screen extends State<Edit_screen> {
   TextEditingController _userNameTextController = TextEditingController();
-
-  //String returnedTextField = '';
   String? name = '';
-  //String? email = '';
   String? gender = 'none';
   Timestamp? date_time = null;
   DateTime? birthday = null;
+
+  String imageUrl = '';
+  Future<void> uploadImage() async {
+    ImagePicker imagePicker = ImagePicker();
+    XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
+    if (file == null) return;
+    //step 2
+    Reference referenceRoot = FirebaseStorage.instance.ref();
+    Reference referenceDirImages = referenceRoot.child('userImages');
+    Reference referenceImageToUpload = referenceDirImages
+        .child(DateTime.now().millisecondsSinceEpoch.toString());
+    try {
+      print("\n\n intra try\n\n");
+      await referenceImageToUpload.putFile(File(file!.path));
+      imageUrl = await referenceImageToUpload.getDownloadURL();
+      print("\n\n intra dupa url\n\n");
+    } catch (error) {
+      FlutterError("image problems");
+    }
+  }
 
   Future _getDataFromDatabase() async {
     await FirebaseFirestore.instance
@@ -33,16 +54,11 @@ class _Edit_screen extends State<Edit_screen> {
           //email = snapshot.data()!["email"];
           gender = snapshot.data()!["gender"];
           date_time = snapshot.data()!["birthday"];
+          imageUrl = snapshot.data()!["userImage"];
           birthday = date_time?.toDate();
         });
       }
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _getDataFromDatabase();
   }
 
   int _genderValue = 0;
@@ -57,6 +73,12 @@ class _Edit_screen extends State<Edit_screen> {
         birthday = value!;
       });
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getDataFromDatabase();
   }
 
   @override
@@ -84,7 +106,7 @@ class _Edit_screen extends State<Edit_screen> {
                   ),
                 ],
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Stack(
@@ -94,16 +116,15 @@ class _Edit_screen extends State<Edit_screen> {
                         backgroundColor: Colors.black54,
                         child: CircleAvatar(
                           radius: 64,
-                          backgroundImage:
-                              AssetImage("assets/images/fernando.png"),
+                          backgroundImage: NetworkImage(imageUrl),
                         ),
                       ),
                       Positioned(
                         bottom: -10,
                         left: 80,
                         child: IconButton(
-                          onPressed: null,
-                          icon: Icon(
+                          onPressed: uploadImage,
+                          icon: const Icon(
                             Icons.add_a_photo,
                             color: Colors.black,
                             size: 35,
@@ -246,6 +267,7 @@ class _Edit_screen extends State<Edit_screen> {
                       if (_userNameTextController.value.text != '') {
                         name = _userNameTextController.value.text;
                       }
+                      print(imageUrl);
                       final docUser = FirebaseFirestore.instance
                           .collection('users')
                           .doc(FirebaseAuth.instance.currentUser!.uid);
@@ -253,6 +275,7 @@ class _Edit_screen extends State<Edit_screen> {
                         'username': name,
                         'gender': gender,
                         'birthday': birthday,
+                        'userImage': imageUrl,
                       });
                       Navigator.pushReplacement(
                           context,
@@ -269,86 +292,3 @@ class _Edit_screen extends State<Edit_screen> {
     );
   }
 }
-
-/*
-
- MaterialButton(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Main_screen()));
-                      Navigator.of(context).pop();
-                    },
-                    color: Colors.white38,
-                    child: const Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-
-
-Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  MaterialButton(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    color: Colors.white38,
-                    child: const Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 70,
-                  ),
-                  MaterialButton(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    onPressed: () {
-                      if (_userNameTextController.value.text != '') {
-                        name = _userNameTextController.value.text;
-                      }
-                      final docUser = FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(FirebaseAuth.instance.currentUser!.uid);
-                      docUser.update({
-                        'username': name,
-                        'gender': gender,
-                        'birthday': birthday,
-                      });
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Main_screen()));
-                    },
-                    color: Colors.white38,
-                    child: const Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Text(
-                        'Save',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ],
-              )
-*/
