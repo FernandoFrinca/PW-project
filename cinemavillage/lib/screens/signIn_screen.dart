@@ -1,9 +1,7 @@
 import 'package:cinemavillage/screens/Main_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cinemavillage/reusable_widgets/reusable_widget.dart';
-import 'package:cinemavillage/screens/home_screen.dart';
 import 'package:cinemavillage/screens/sinUp_screen.dart';
 
 class SignInScreen extends StatefulWidget {
