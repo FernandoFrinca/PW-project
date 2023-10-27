@@ -16,9 +16,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 241, 81, 37)),
+      theme:  ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: Color.fromARGB(255, 25, 25, 25),
         useMaterial3: true,
       ),
       home: const SignInScreen(),
