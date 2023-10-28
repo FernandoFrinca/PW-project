@@ -61,15 +61,17 @@ class _Profile_screenState extends State<Profile_screen> {
               child: Padding(
                 padding: EdgeInsets.fromLTRB(20, 40, 20, 0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: 100,
+                          width: 200,
                           height: 100,
-                          child:
-                              Image.asset("assets/images/Cinema_village_2.png"),
+                          child: Image.asset(
+                              'assets/images/Cinema_village_N1.png'),
                         ),
                       ],
                     ),
@@ -99,19 +101,12 @@ class _Profile_screenState extends State<Profile_screen> {
                         const SizedBox(
                           width: 20,
                         ),
-                        printText(name!, Icons.person_outline, 335, 50),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(
-                          width: 20,
+                        printText(
+                          name!,
+                          Icons.person_outline,
+                          MediaQuery.of(context).size.width * 0.80,
+                          MediaQuery.of(context).size.height * 0.062,
                         ),
-                        printText(email!, Icons.email_outlined, 335, 50),
                       ],
                     ),
                     const SizedBox(
@@ -124,10 +119,11 @@ class _Profile_screenState extends State<Profile_screen> {
                           width: 20,
                         ),
                         printText(
-                            '${birthday?.day}/${birthday?.month}/${birthday?.year}',
-                            Icons.calendar_month_outlined,
-                            335,
-                            50),
+                          email!,
+                          Icons.email_outlined,
+                          MediaQuery.of(context).size.width * 0.80,
+                          MediaQuery.of(context).size.height * 0.062,
+                        ),
                       ],
                     ),
                     const SizedBox(
@@ -140,7 +136,28 @@ class _Profile_screenState extends State<Profile_screen> {
                           width: 20,
                         ),
                         printText(
-                            gender!, Icons.people_outline_outlined, 335, 50)
+                          '${birthday?.day}/${birthday?.month}/${birthday?.year}',
+                          Icons.calendar_month_outlined,
+                          MediaQuery.of(context).size.width * 0.80,
+                          MediaQuery.of(context).size.height * 0.062,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        printText(
+                          gender!,
+                          Icons.people_outline_outlined,
+                          MediaQuery.of(context).size.width * 0.80,
+                          MediaQuery.of(context).size.height * 0.062,
+                        )
                       ],
                     ),
                     const SizedBox(
@@ -151,28 +168,40 @@ class _Profile_screenState extends State<Profile_screen> {
                       children: [
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              minimumSize: Size(130, 40)),
+                            minimumSize: Size(130, 40),
+                            backgroundColor: Colors.white,
+                          ),
                           onPressed: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Edit_screen()));
                           },
-                          child: Text('Edit Profile'),
+                          child: const Text(
+                            'Edit Profile',
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 241, 81, 37)),
+                          ),
                         ),
                         const SizedBox(
                           width: 20,
                         ),
                         ElevatedButton(
-                          child: Text("Logout"),
                           style: ElevatedButton.styleFrom(
-                              minimumSize: Size(130, 40)),
+                            minimumSize: Size(130, 40),
+                            backgroundColor: Colors.white,
+                          ),
                           onPressed: () {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => SignInScreen()));
                           },
+                          child: const Text(
+                            "Logout",
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 241, 81, 37)),
+                          ),
                         ),
                       ],
                     ),

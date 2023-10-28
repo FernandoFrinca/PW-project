@@ -8,6 +8,11 @@ class Main_screen extends StatefulWidget {
   State<Main_screen> createState() => MainPage();
 }
 
+int? userType;
+userSet(int value) {
+  userType = value;
+}
+
 class MainPage extends State<Main_screen> {
   int _selectedIndex = 1;
   List<Widget> _widgetOptions = <Widget>[
@@ -36,25 +41,26 @@ class MainPage extends State<Main_screen> {
         selectedItemColor: Color.fromARGB(255, 241, 100, 37),
         iconSize: 30,
         selectedFontSize: 15,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
+        items: <BottomNavigationBarItem>[
+          const BottomNavigationBarItem(
             icon: Icon(
               Icons.search,
             ),
             label: 'Search',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
             ),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
+          if (userType == 1)
+            const BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person,
+              ),
+              label: 'Profile',
             ),
-            label: 'Profile',
-          ),
         ],
       ),
     );

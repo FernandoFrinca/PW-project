@@ -12,12 +12,12 @@ class Home_screen extends StatefulWidget {
 }
 
 class _Home_screenState extends State<Home_screen> {
-
   late Future<List<Movie>> trendingMovies;
   late Future<List<Movie>> topRatedMovies;
   late Future<List<Movie>> upcomingMovies;
 
-  void initState(){
+  @override
+  void initState() {
     super.initState();
     trendingMovies = Api().getTrendingMovies();
     topRatedMovies = Api().getTopRadefMovies();
@@ -54,78 +54,93 @@ class _Home_screenState extends State<Home_screen> {
               ),
             ),
             const SizedBox(height: 15),
-
             SizedBox(
               child: FutureBuilder(
-                future:  trendingMovies,
+                future: trendingMovies,
                 builder: (context, snapshot) {
-                  if(snapshot.hasError){
-                    return Center(child: Text(snapshot.error.toString()),
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text(snapshot.error.toString()),
                     );
-                  }else if(snapshot.hasData){
-                    return TrendingSlider(snapshot: snapshot,);
-                  }else{
-                    return const Center(child:  CircularProgressIndicator());
+                  } else if (snapshot.hasData) {
+                    return TrendingSlider(
+                      snapshot: snapshot,
+                    );
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
                   }
                 },
               ),
             ),
-            
-            const SizedBox(height: 15,),
-
+            const SizedBox(
+              height: 15,
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('Top rated movies',
-              style: GoogleFonts.aBeeZee(
-                fontSize: 20,
-              ),),),
-            SizedBox(height: 15,),
-            
+              child: Text(
+                'Top rated movies',
+                style: GoogleFonts.aBeeZee(
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
             SizedBox(
               child: FutureBuilder(
-                future:  topRatedMovies,
+                future: topRatedMovies,
                 builder: (context, snapshot) {
-                  if(snapshot.hasError){
-                    return Center(child: Text(snapshot.error.toString()),
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text(snapshot.error.toString()),
                     );
-                  }else if(snapshot.hasData){
-                    return MoviesSlider(snapshot: snapshot,);
-                  }else{
-                    return const Center(child:  CircularProgressIndicator());
+                  } else if (snapshot.hasData) {
+                    return MoviesSlider(
+                      snapshot: snapshot,
+                    );
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
                   }
                 },
               ),
             ),
-            
-            SizedBox(height: 15,),
+            SizedBox(
+              height: 15,
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('Upcoming movies',
-              style: GoogleFonts.aBeeZee(
-                fontSize: 20,
-              ),),),
-            SizedBox(height: 15,),
-            
+              child: Text(
+                'Upcoming movies',
+                style: GoogleFonts.aBeeZee(
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
             SizedBox(
               child: FutureBuilder(
-                future:  upcomingMovies,
+                future: upcomingMovies,
                 builder: (context, snapshot) {
-                  if(snapshot.hasError){
-                    return Center(child: Text(snapshot.error.toString()),
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text(snapshot.error.toString()),
                     );
-                  }else if(snapshot.hasData){
-                    return MoviesSlider(snapshot: snapshot,);
-                  }else{
-                    return const Center(child:  CircularProgressIndicator());
+                  } else if (snapshot.hasData) {
+                    return MoviesSlider(
+                      snapshot: snapshot,
+                    );
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
                   }
                 },
               ),
             ),
-            
           ],
         ),
       ),
     );
   }
 }
-
