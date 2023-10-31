@@ -1,10 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cinemavillage/constants.dart';
+import 'package:cinemavillage/screens/details_screen_movies.dart';
 import 'package:flutter/material.dart';
 
 class TrendingSlider extends StatelessWidget {
   const TrendingSlider({
-    super.key, required this.snapshot,
+    super.key,
+    required this.snapshot,
   });
 
   final AsyncSnapshot snapshot;
@@ -22,18 +24,28 @@ class TrendingSlider extends StatelessWidget {
             enlargeCenterPage: true,
             pageSnapping: true,
             autoPlayCurve: Curves.fastOutSlowIn,
-            autoPlayAnimationDuration:
-                const Duration(seconds: 1)),
+            autoPlayAnimationDuration: const Duration(seconds: 1)),
         itemBuilder: (context, itemIndex, pageViewIndex) {
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: SizedBox(
-              height: 300,
-              width: 200,
-              child: Image.network(
-                filterQuality: FilterQuality.high,
-                fit: BoxFit.cover,
-                '${Constants.imagePath}${snapshot.data[itemIndex].posterPath}',
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      DetailsScreenMovies(movie: snapshot.data[itemIndex]),
+                ),
+              );
+            },
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: SizedBox(
+                height: 300,
+                width: 200,
+                child: Image.network(
+                  filterQuality: FilterQuality.high,
+                  fit: BoxFit.cover,
+                  '${Constants.imagePath}${snapshot.data[itemIndex].posterPath}',
+                ),
               ),
             ),
           );
@@ -45,7 +57,8 @@ class TrendingSlider extends StatelessWidget {
 
 class MoviesSlider extends StatelessWidget {
   const MoviesSlider({
-    super.key, required this.snapshot,
+    super.key,
+    required this.snapshot,
   });
   final AsyncSnapshot snapshot;
 
@@ -58,18 +71,29 @@ class MoviesSlider extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),
         itemCount: snapshot.data!.length,
-        itemBuilder: (context, index){
+        itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: SizedBox(
-                height: 200,
-                width: 150,
-                child: Image.network(
-                  filterQuality: FilterQuality.high,
-                  fit: BoxFit.cover,
-                  '${Constants.imagePath}${snapshot.data![index].posterPath}',
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      DetailsScreenMovies(movie: snapshot.data[index]),
+                ),
+              );
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: SizedBox(
+                  height: 200,
+                  width: 150,
+                  child: Image.network(
+                    filterQuality: FilterQuality.high,
+                    fit: BoxFit.cover,
+                    '${Constants.imagePath}${snapshot.data![index].posterPath}',
+                  ),
                 ),
               ),
             ),
@@ -79,4 +103,3 @@ class MoviesSlider extends StatelessWidget {
     );
   }
 }
-
