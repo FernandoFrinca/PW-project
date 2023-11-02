@@ -168,7 +168,7 @@ class _Edit_screen extends State<Edit_screen> {
                     Center(
                       child: SizedBox(
                         height: MediaQuery.of(context).size.height * 0.07,
-                        width: MediaQuery.of(context).size.width * 0.34,
+                        width: MediaQuery.of(context).size.width * 0.33,
                         child: MaterialButton(
                           elevation: 0,
                           shape: RoundedRectangleBorder(
