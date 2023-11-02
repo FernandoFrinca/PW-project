@@ -13,6 +13,10 @@ userSet(int value) {
   userType = value;
 }
 
+int? getUserType() {
+  return userType;
+}
+
 class MainPage extends State<Main_screen> {
   int _selectedIndex = 1;
   List<Widget> _widgetOptions = <Widget>[

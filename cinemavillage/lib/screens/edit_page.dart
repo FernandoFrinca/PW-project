@@ -113,6 +113,7 @@ class _Edit_screen extends State<Edit_screen> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Stack(
                       children: [
@@ -144,7 +145,7 @@ class _Edit_screen extends State<Edit_screen> {
                   height: 40,
                 ),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.90,
+                  width: MediaQuery.of(context).size.width * 0.72,
                   height: MediaQuery.of(context).size.height * 0.07,
                   child: updateText(name!, Icons.edit, _userNameTextController),
                 ),
@@ -152,23 +153,22 @@ class _Edit_screen extends State<Edit_screen> {
                   height: 20,
                 ),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(
-                      width: 0,
-                    ),
                     printText(
                       '${birthday?.day}/${birthday?.month}/${birthday?.year}',
                       Icons.calendar_month_outlined,
-                      MediaQuery.of(context).size.width * 0.51,
+                      MediaQuery.of(context).size.width * 0.35,
                       MediaQuery.of(context).size.height * 0.07,
                     ),
                     const SizedBox(
-                      width: 20,
+                      width: 10,
                     ),
                     Center(
                       child: SizedBox(
                         height: MediaQuery.of(context).size.height * 0.07,
-                        width: MediaQuery.of(context).size.width * 0.33,
+                        width: MediaQuery.of(context).size.width * 0.35,
                         child: MaterialButton(
                           elevation: 0,
                           shape: RoundedRectangleBorder(
@@ -193,67 +193,72 @@ class _Edit_screen extends State<Edit_screen> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     printText(
                         "Select gender:",
                         Icons.people_outline_outlined,
-                        MediaQuery.of(context).size.width * 0.34,
-                        MediaQuery.of(context).size.height * 0.07),
+                        MediaQuery.of(context).size.width * 0.35,
+                        MediaQuery.of(context).size.height * 0.155),
                     const SizedBox(
                       width: 10,
                     ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.07,
-                      width: MediaQuery.of(context).size.width * 0.23,
-                      decoration: BoxDecoration(
-                        color: Colors.white38,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        children: [
-                          Radio(
-                              value: 1,
-                              groupValue: _genderValue,
-                              onChanged: (value) {
-                                setState(() {
-                                  _genderValue = value!;
-                                  gender = "Male";
-                                });
-                              }),
-                          const Text(
-                            "Male",
-                            style: TextStyle(color: Colors.white),
+                    Column(
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.07,
+                          width: MediaQuery.of(context).size.width * 0.35,
+                          decoration: BoxDecoration(
+                            color: Colors.white38,
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                          const SizedBox(width: 15),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.07,
-                      width: MediaQuery.of(context).size.width * 0.28,
-                      decoration: BoxDecoration(
-                        color: Colors.white38,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        children: [
-                          Radio(
-                              value: 2,
-                              groupValue: _genderValue,
-                              onChanged: (value) {
-                                setState(() {
-                                  _genderValue = value!;
-                                  gender = "Female";
-                                });
-                              }),
-                          const Text(
-                            "Female",
-                            style: TextStyle(color: Colors.white),
+                          child: Row(
+                            children: [
+                              Radio(
+                                  value: 1,
+                                  groupValue: _genderValue,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _genderValue = value!;
+                                      gender = "Male";
+                                    });
+                                  }),
+                              const Text(
+                                "Male",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              const SizedBox(width: 15),
+                            ],
                           ),
-                          const SizedBox(width: 15),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.07,
+                          width: MediaQuery.of(context).size.width * 0.35,
+                          decoration: BoxDecoration(
+                            color: Colors.white38,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Row(
+                            children: [
+                              Radio(
+                                  value: 2,
+                                  groupValue: _genderValue,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _genderValue = value!;
+                                      gender = "Female";
+                                    });
+                                  }),
+                              const Text(
+                                "Female",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              const SizedBox(width: 15),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -262,6 +267,7 @@ class _Edit_screen extends State<Edit_screen> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(

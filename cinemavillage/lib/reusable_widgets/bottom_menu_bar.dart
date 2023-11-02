@@ -11,10 +11,10 @@ class _NavigationBar extends StatefulWidget {
 
 class NavigationBarState extends State<_NavigationBar> {
   int _selectedIndex = 1;
-  List<Widget> _widgetOptions = <Widget>[
-    Home_screen(),
-    Search_Screen(),
-    Text('Profile'),
+  final List<Widget> _widgetOptions = <Widget>[
+    const Home_screen(),
+    const Search_Screen(),
+    const Text('Profile'),
   ];
   void _onItemTap(int index) {
     setState(() {

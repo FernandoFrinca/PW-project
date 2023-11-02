@@ -77,12 +77,12 @@ class MoviesSlider extends StatelessWidget {
             child: GestureDetector(
               onTap: () {
                 Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      DetailsScreenMovies(movie: snapshot.data[index]),
-                ),
-              );
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        DetailsScreenMovies(movie: snapshot.data[index]),
+                  ),
+                );
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
