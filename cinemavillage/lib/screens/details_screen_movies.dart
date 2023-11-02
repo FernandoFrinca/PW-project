@@ -1,5 +1,7 @@
 import 'package:cinemavillage/constants.dart';
 import 'package:cinemavillage/models/movie.dart';
+import 'package:cinemavillage/reusable_widgets/BackButton.dart';
+import 'package:cinemavillage/reusable_widgets/GenreSelector.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -16,25 +18,9 @@ class DetailsScreenMovies extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar.large(
-            leading: Container(
-              height: 70,
-              width: 70,
-              margin: const EdgeInsets.only(
-                top: 16,
-                left: 16,
-              ),
-              decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(8)),
-              child: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(Icons.arrow_back_rounded),
-              ),
-            ),
-            backgroundColor: Colors.transparent,
-            expandedHeight: 250,
+            leading: const BackButton1(),
+            backgroundColor: Color.fromARGB(255, 26, 26, 26),
+            expandedHeight: 300,
             pinned: true,
             floating: true,
             flexibleSpace: FlexibleSpaceBar(
@@ -54,12 +40,65 @@ class DetailsScreenMovies extends StatelessWidget {
               ),
             ),
           ),
-          const SliverToBoxAdapter(
+          SliverToBoxAdapter(
             child: Padding(
-              padding: EdgeInsets.all(12),
-              child: Column(children: [
-                Text('Overview')
-              ],),
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        for (int i = 0; i < movie.genreIds.length; i++)
+                          Text(getGenreNameById(movie.genreIds[i])),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.calendar_month_outlined,
+                        ),
+                        Text(
+                          '  ${movie.releaseDate}     ',
+                          style: GoogleFonts.roboto(
+                              fontSize: 17, fontWeight: FontWeight.bold),
+                        ),
+                        const Icon(
+                          Icons.star,
+                        ),
+                        Text(
+                          '  ${movie.voteAverage.toStringAsFixed(1)}',
+                          style: GoogleFonts.roboto(
+                              fontSize: 17, fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text('Overview',
+                      style: GoogleFonts.openSans(
+                          fontSize: 25, fontWeight: FontWeight.w800)),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Text(
+                    movie.overview,
+                    style: GoogleFonts.roboto(
+                        fontSize: 17, fontWeight: FontWeight.w400),
+                    textAlign: TextAlign.justify,
+                  ),
+                ],
+              ),
             ),
           ),
         ],
