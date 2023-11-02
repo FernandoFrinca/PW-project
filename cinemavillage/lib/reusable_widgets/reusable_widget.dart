@@ -196,3 +196,47 @@ Container Top_bar_black(dynamic screenHeight, dynamic screenWidth) {
     ]),
   );
 }
+
+// ignore: unused_element
+class favoriteButton extends StatefulWidget {
+  const favoriteButton({super.key});
+
+  @override
+  State<favoriteButton> createState() => _favoriteButtonState();
+}
+
+// ignore: camel_case_types
+class _favoriteButtonState extends State<favoriteButton> {
+  bool _isFavorite = false;
+  void triggerFavorite() {
+    setState(() {
+      if (_isFavorite) {
+        _isFavorite = false;
+      } else {
+        _isFavorite = true;
+      }
+    });
+  }
+
+  @override
+  IconButton build(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        triggerFavorite();
+      },
+      style: IconButton.styleFrom(
+        backgroundColor: Colors.white10,
+        iconSize: 25,
+      ),
+      icon: (_isFavorite
+          ? const Icon(
+              Icons.favorite,
+              color: Colors.red,
+            )
+          : const Icon(
+              Icons.favorite_border,
+              color: Colors.white,
+            )),
+    );
+  }
+}

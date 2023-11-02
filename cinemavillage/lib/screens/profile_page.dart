@@ -104,7 +104,7 @@ class _Profile_screenState extends State<Profile_screen> {
                         printText(
                           name!,
                           Icons.person_outline,
-                          MediaQuery.of(context).size.width * 0.80,
+                          MediaQuery.of(context).size.width * 0.70,
                           MediaQuery.of(context).size.height * 0.062,
                         ),
                       ],
@@ -121,7 +121,7 @@ class _Profile_screenState extends State<Profile_screen> {
                         printText(
                           email!,
                           Icons.email_outlined,
-                          MediaQuery.of(context).size.width * 0.80,
+                          MediaQuery.of(context).size.width * 0.70,
                           MediaQuery.of(context).size.height * 0.062,
                         ),
                       ],
@@ -138,7 +138,7 @@ class _Profile_screenState extends State<Profile_screen> {
                         printText(
                           '${birthday?.day}/${birthday?.month}/${birthday?.year}',
                           Icons.calendar_month_outlined,
-                          MediaQuery.of(context).size.width * 0.80,
+                          MediaQuery.of(context).size.width * 0.70,
                           MediaQuery.of(context).size.height * 0.062,
                         ),
                       ],
@@ -155,17 +155,54 @@ class _Profile_screenState extends State<Profile_screen> {
                         printText(
                           gender!,
                           Icons.people_outline_outlined,
-                          MediaQuery.of(context).size.width * 0.80,
+                          MediaQuery.of(context).size.width * 0.70,
                           MediaQuery.of(context).size.height * 0.062,
                         )
                       ],
                     ),
                     const SizedBox(
-                      height: 80,
+                      height: 20,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(
+                                MediaQuery.of(context).size.width * 0.40, 40),
+                            backgroundColor: Colors.white,
+                          ),
+                          onPressed: () {},
+                          child: const Row(
+                            children: [
+                              Icon(Icons.favorite, color: Colors.red),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                "Favorites",
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 241, 81, 37)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        const SizedBox(
+                          width: 10,
+                        ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size(130, 40),

@@ -2,8 +2,10 @@ import 'package:cinemavillage/constants.dart';
 import 'package:cinemavillage/models/movie.dart';
 import 'package:cinemavillage/reusable_widgets/BackButton.dart';
 import 'package:cinemavillage/reusable_widgets/GenreSelector.dart';
+import 'package:cinemavillage/reusable_widgets/reusable_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cinemavillage/screens/Main_page.dart';
 
 class DetailsScreenMovies extends StatelessWidget {
   const DetailsScreenMovies({
@@ -12,8 +14,13 @@ class DetailsScreenMovies extends StatelessWidget {
   });
   final Movie movie;
 
+  // ignore: non_constant_identifier_names, prefer_const_constructors
+
   @override
   Widget build(BuildContext context) {
+    int? UserType = getUserType();
+
+    favoriteButton favButton;
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -45,6 +52,7 @@ class DetailsScreenMovies extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(
                     height: 5,
@@ -62,6 +70,8 @@ class DetailsScreenMovies extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Icon(
                           Icons.calendar_month_outlined,
@@ -78,7 +88,11 @@ class DetailsScreenMovies extends StatelessWidget {
                           '  ${movie.voteAverage.toStringAsFixed(1)}',
                           style: GoogleFonts.roboto(
                               fontSize: 17, fontWeight: FontWeight.bold),
-                        )
+                        ),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        if (userType == 1) const favoriteButton(),
                       ],
                     ),
                   ),

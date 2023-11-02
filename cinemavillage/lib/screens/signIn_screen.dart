@@ -53,6 +53,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           email: _emailTextController.text,
                           password: _passwordTextController.text)
                       .then((value) {
+                    _passwordTextController.text = "";
                     Navigator.push(
                         context,
                         MaterialPageRoute(
