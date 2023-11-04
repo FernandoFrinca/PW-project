@@ -19,7 +19,7 @@ class DetailsScreenMovies extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int? UserType = getUserType();
-
+    String title = movie.title;
     favoriteButton favButton;
     return Scaffold(
       body: CustomScrollView(
@@ -92,7 +92,10 @@ class DetailsScreenMovies extends StatelessWidget {
                         const SizedBox(
                           width: 15,
                         ),
-                        if (userType == 1) const favoriteButton(),
+                        if (userType == 1)
+                          favoriteButton(
+                            name: title,
+                          ),
                       ],
                     ),
                   ),

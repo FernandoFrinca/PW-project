@@ -1,4 +1,5 @@
 import 'package:cinemavillage/reusable_widgets/reusable_widget.dart';
+import 'package:cinemavillage/screens/favorites_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -176,7 +177,13 @@ class _Profile_screenState extends State<Profile_screen> {
                                 MediaQuery.of(context).size.width * 0.40, 40),
                             backgroundColor: Colors.white,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const favorites_screen()));
+                          },
                           child: const Row(
                             children: [
                               Icon(Icons.favorite, color: Colors.red),
