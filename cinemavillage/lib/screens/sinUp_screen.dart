@@ -26,6 +26,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     DateTime _birthday,
     String _gender,
     String _image,
+    List<String> _favorites,
   ) async {
     await FirebaseFirestore.instance.collection('users').doc(_uid).set({
       'email': mail,
@@ -35,6 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       'birthday': _birthday,
       'gender': _gender,
       'userImage': _image,
+      'favorites': _favorites,
     });
   }
 
@@ -95,12 +97,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     final _uid = user!.uid;
                     addUserDetails(
                       _emailTextController.text.trim(),
-                      _passwordTextController.text.trim(),
+                      "",
                       _userNameTextController.text.trim(),
                       _uid,
                       _date_time,
                       'none',
                       'https://firebasestorage.googleapis.com/v0/b/cinemavillage-8844e.appspot.com/o/userImages%2Fuser.jpg?alt=media&token=9c71e381-526b-4eb9-9c62-1247bbef901c&_gl=1*87droy*_ga*ODM2NzA1OTg0LjE2OTcxMjA1ODU.*_ga_CW55HF8NVT*MTY5Nzk5MDk4MS4yMi4xLjE2OTc5OTEwMjEuMjAuMC4w',
+                      [],
                     );
                     print("Created New Account");
                     Navigator.push(context,

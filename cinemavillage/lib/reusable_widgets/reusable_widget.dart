@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 Image logoWidget(String imageName, dynamic widthIn, dynamic heightIn) {
@@ -199,7 +201,8 @@ Container Top_bar_black(dynamic screenHeight, dynamic screenWidth) {
 
 // ignore: unused_element
 class favoriteButton extends StatefulWidget {
-  const favoriteButton({super.key});
+  final String name;
+  const favoriteButton({Key? key, required this.name}) : super(key: key);
 
   @override
   State<favoriteButton> createState() => _favoriteButtonState();
@@ -208,12 +211,55 @@ class favoriteButton extends StatefulWidget {
 // ignore: camel_case_types
 class _favoriteButtonState extends State<favoriteButton> {
   bool _isFavorite = false;
+  List? favorites = null;
+  Future _getDataFromDatabase() async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then(
+      (snapshot) async {
+        if (snapshot.exists) {
+          setState(() {
+            favorites = snapshot.data()!["favorites"];
+          });
+        }
+        List<String> titles = [];
+        titles = favorites!.map((element) => element.toString()).toList();
+        for (String title in titles) {
+          if (title == widget.name) {
+            _isFavorite = true;
+            break;
+          }
+        }
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getDataFromDatabase();
+  }
+
   void triggerFavorite() {
     setState(() {
       if (_isFavorite) {
         _isFavorite = false;
+        final docUser = FirebaseFirestore.instance
+            .collection('users')
+            .doc(FirebaseAuth.instance.currentUser!.uid);
+        docUser.update({
+          'favorites': FieldValue.arrayRemove([widget.name]),
+        });
       } else {
         _isFavorite = true;
+        final docUser = FirebaseFirestore.instance
+            .collection('users')
+            .doc(FirebaseAuth.instance.currentUser!.uid);
+        docUser.update({
+          'favorites': FieldValue.arrayUnion([widget.name]),
+        });
       }
     });
   }

@@ -21,6 +21,7 @@ class _Edit_screen extends State<Edit_screen> {
   String? gender = 'none';
   Timestamp? date_time = null;
   DateTime? birthday = null;
+  //List? favorites = [];
 
   String imageUrl = '';
   Future<void> uploadImage() async {
@@ -54,6 +55,7 @@ class _Edit_screen extends State<Edit_screen> {
           date_time = snapshot.data()!["birthday"];
           imageUrl = snapshot.data()!["userImage"];
           birthday = date_time?.toDate();
+          //  favorites = snapshot.data()!["favorites"];
         });
       }
     });
@@ -304,6 +306,7 @@ class _Edit_screen extends State<Edit_screen> {
                           'gender': gender,
                           'birthday': birthday,
                           'userImage': imageUrl,
+                          //'favorites': favorites,
                         });
                         Navigator.pushReplacement(
                             context,

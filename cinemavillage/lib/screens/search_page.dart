@@ -1,16 +1,17 @@
 import 'package:cinemavillage/models/movie.dart';
 import 'package:cinemavillage/models/movie_model_2.dart';
 import 'package:cinemavillage/reusable_widgets/reusable_widget.dart';
+import 'package:cinemavillage/screens/Main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Search_Screen extends StatefulWidget {
   const Search_Screen({super.key});
   @override
-  State<Search_Screen> createState() => _SignInScreenState();
+  State<Search_Screen> createState() => _SearchState();
 }
 
-class _SignInScreenState extends State<Search_Screen> {
+class _SearchState extends State<Search_Screen> {
   static List<MovieModel> main_movie_list = [
     MovieModel(
         "Jocurile foamei: Balada șerpilor și a păsărilor cântătoare (2023)",
@@ -83,6 +84,13 @@ class _SignInScreenState extends State<Search_Screen> {
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 25, 25, 25),
         elevation: 0.0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const Main_screen()));
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.all(16),
