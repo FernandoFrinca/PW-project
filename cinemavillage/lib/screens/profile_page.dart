@@ -181,8 +181,7 @@ class _Profile_screenState extends State<Profile_screen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        const favorites_screen()));
+                                    builder: (context) => favorites_screen()));
                           },
                           child: const Row(
                             children: [
