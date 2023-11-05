@@ -286,3 +286,60 @@ class _favoriteButtonState extends State<favoriteButton> {
     );
   }
 }
+
+class ListElement extends StatelessWidget {
+  final child;
+  const ListElement({this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(9),
+      child: Container(
+        height: 80,
+        color: Colors.white30,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 0.75,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        child,
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // ignore: prefer_const_constructors
+              Container(
+                width: MediaQuery.of(context).size.width * 0.10,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerRight,
+                      // ignore: prefer_const_constructors
+                      child: favoriteButton(name: child),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
