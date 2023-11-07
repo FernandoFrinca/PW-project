@@ -1,4 +1,7 @@
+import 'package:cinemavillage/screens/admin_page.dart';
 import 'package:cinemavillage/screens/profile_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cinemavillage/screens/search_page.dart';
 import 'package:cinemavillage/screens/home_page.dart';
@@ -19,15 +22,37 @@ int? getUserType() {
 
 class MainPage extends State<Main_screen> {
   int _selectedIndex = 1;
-  List<Widget> _widgetOptions = <Widget>[
-    Search_Screen(),
-    Home_screen(),
-    Profile_screen(),
+  final List<Widget> _widgetOptions = <Widget>[
+    const Search_Screen(),
+    const Home_screen(),
+    const Profile_screen(),
+    const Admin_screen(),
   ];
   void _onItemTap(int index) {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  int _isAdmin = 0;
+  Future _getDataFromDatabase() async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((snapshot) async {
+      if (snapshot.exists) {
+        setState(() {
+          _isAdmin = snapshot.data()!["isAdmin"];
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getDataFromDatabase();
   }
 
   @override
@@ -64,6 +89,13 @@ class MainPage extends State<Main_screen> {
                 Icons.person,
               ),
               label: 'Profile',
+            ),
+          if (_isAdmin == 1 && userType != 0)
+            const BottomNavigationBarItem(
+              icon: Icon(
+                Icons.admin_panel_settings,
+              ),
+              label: 'Admin',
             ),
         ],
       ),
