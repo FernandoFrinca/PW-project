@@ -10,10 +10,10 @@ class Profile_screen extends StatefulWidget {
   const Profile_screen({super.key});
 
   @override
-  State<Profile_screen> createState() => _Profile_screenState();
+  State<Profile_screen> createState() => _Profile_screen();
 }
 
-class _Profile_screenState extends State<Profile_screen> {
+class _Profile_screen extends State<Profile_screen> {
   String? name = '';
   String? email = '';
   String? gender = '';

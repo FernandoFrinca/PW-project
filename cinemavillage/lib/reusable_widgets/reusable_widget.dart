@@ -312,9 +312,17 @@ class ListElement extends StatelessWidget {
                   children: [
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                        child,
-                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            Text(
+                              child,
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.white),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -332,6 +340,150 @@ class ListElement extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       // ignore: prefer_const_constructors
                       child: favoriteButton(name: child),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ListElementAdmin extends StatelessWidget {
+  final email;
+  final username;
+  final document;
+  final type;
+  final curentUser;
+  const ListElementAdmin(
+      {this.email, this.username, this.document, this.type, this.curentUser});
+
+  @override
+  Widget build(BuildContext context) {
+    bool change = false;
+    bool admin = false;
+    if (curentUser == 1) admin = true;
+    if (type == 1)
+      change = false;
+    else
+      change = true;
+    return Padding(
+      padding: const EdgeInsets.all(11),
+      child: Container(
+        height: 80,
+        color: Colors.white30,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 0.65,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            Text(
+                              email,
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            Text(
+                              username,
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.10,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerRight,
+                      // ignore: prefer_const_constructors
+                      child: IconButton(
+                        icon: (change
+                            ? const Icon(
+                                Icons.add_moderator_outlined,
+                                color: Colors.red,
+                              )
+                            : const Icon(
+                                Icons.admin_panel_settings,
+                                color: Colors.green,
+                              )),
+                        onPressed: () {
+                          int set = 0;
+                          if (change == true)
+                            set = 1;
+                          else
+                            set = 0;
+                          final docUser = FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(document);
+                          docUser.update({
+                            'isAdmin': set,
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // ignore: prefer_const_constructors
+              Container(
+                width: MediaQuery.of(context).size.width * 0.10,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerRight,
+                      // ignore: prefer_const_constructors
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                        onPressed: () {
+                          if (admin) {
+                            final docUser = FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(document);
+                            docUser.delete();
+                          }
+                        },
+                      ),
                     ),
                   ],
                 ),
