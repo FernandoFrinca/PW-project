@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cinemavillage/screens/home_page.dart';
-import 'package:cinemavillage/screens/search_page.dart';
+import 'package:cinemavillage/screens/search_page_2.dart';
 
 class _NavigationBar extends StatefulWidget {
   const _NavigationBar({super.key});
@@ -13,7 +13,7 @@ class NavigationBarState extends State<_NavigationBar> {
   int _selectedIndex = 1;
   final List<Widget> _widgetOptions = <Widget>[
     const Home_screen(),
-    const Search_Screen(),
+    MovieSearch(),
     const Text('Profile'),
   ];
   void _onItemTap(int index) {

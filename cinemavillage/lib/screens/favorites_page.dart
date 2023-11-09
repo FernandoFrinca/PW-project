@@ -4,6 +4,7 @@ import 'package:cinemavillage/screens/profile_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class favorites_screen extends StatefulWidget {
   const favorites_screen({super.key});
@@ -29,7 +30,7 @@ class _favorites_screen extends State<favorites_screen> {
         }
         titles = favorites!.map((element) => element.toString()).toList();
         titles.sort();
-        print(titles);
+        
       },
     );
   }

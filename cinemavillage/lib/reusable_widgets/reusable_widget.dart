@@ -1,6 +1,11 @@
+import 'dart:convert';
+
+import 'package:cinemavillage/models/movie_model_OMDb.dart';
+import 'package:cinemavillage/screens/details_screen_movies_OMDb.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 Image logoWidget(String imageName, dynamic widthIn, dynamic heightIn) {
   int VariableWidthIn = widthIn;
@@ -289,62 +294,100 @@ class _favoriteButtonState extends State<favoriteButton> {
 
 class ListElement extends StatelessWidget {
   final child;
-  const ListElement({this.child});
+  const ListElement({required String this.child});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(9),
-      child: Container(
-        height: 80,
-        color: Colors.white30,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width * 0.75,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            Text(
-                              child,
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
-                            ),
-                          ],
+    return GestureDetector(
+      onTap: () async {
+        final apiKey = "67ae677b";
+        var firstImdbID = "tt2015381";
+
+        final movieName = child;
+        final apiUrl1 =
+            Uri.parse("http://www.omdbapi.com/?s=$movieName&apikey=$apiKey");
+
+        final response1 = await http.get(apiUrl1);
+
+        if (response1.statusCode == 200) {
+          Map<String, dynamic> data = json.decode(response1.body);
+          if (data['Response'] == 'True') {
+            // Check if the response is successful
+            firstImdbID = data['Search'][0]['imdbID'];
+          } 
+        }
+
+        final apiUrl2 =
+            Uri.parse("http://www.omdbapi.com/?i=$firstImdbID&apikey=$apiKey");
+
+        final response2 = await http.get(apiUrl2);
+
+        if (response2.statusCode == 200) {
+          final data = json.decode(response2.body);
+          final movieModel = MovieModel.fromJson(data);
+
+          // ignore: use_build_context_synchronously
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MovieDetailsScreen_OMDb(movieModel),
+            ),
+          );
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(9),
+        child: Container(
+          height: 80,
+          color: Colors.white30,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              Text(
+                                child,
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.white),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
 
-              // ignore: prefer_const_constructors
-              Container(
-                width: MediaQuery.of(context).size.width * 0.10,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Align(
-                      alignment: Alignment.centerRight,
-                      // ignore: prefer_const_constructors
-                      child: favoriteButton(name: child),
-                    ),
-                  ],
+                // ignore: prefer_const_constructors
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.10,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerRight,
+                        // ignore: prefer_const_constructors
+                        child: favoriteButton(name: child),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
