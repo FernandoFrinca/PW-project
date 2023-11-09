@@ -27,10 +27,10 @@ class _MovieSearchState extends State<MovieSearch> {
   List<Map<String, dynamic>> suggestions = [];
   Map<String, dynamic>? selectedMovie;
 
-  final debouncer = Debouncer(milliseconds: 500); 
+  final debouncer = Debouncer(milliseconds: 500);
 
   Future<void> fetchSuggestions(String query) async {
-    final apiKey = "67ae677b"; 
+    final apiKey = "67ae677b";
     final apiUrl = Uri.parse("http://www.omdbapi.com/?s=$query&apikey=$apiKey");
 
     final response = await http.get(apiUrl);
@@ -47,32 +47,34 @@ class _MovieSearchState extends State<MovieSearch> {
     }
   }
 
-void onSuggestionTapped(Map<String, dynamic> movie) async {
-  final imdbID = movie['imdbID'];
-  final apiKey = "67ae677b";
-  final apiUrl = Uri.parse("http://www.omdbapi.com/?i=$imdbID&apikey=$apiKey");
+  void onSuggestionTapped(Map<String, dynamic> movie) async {
+    final imdbID = movie['imdbID'];
+    final apiKey = "67ae677b";
+    final apiUrl =
+        Uri.parse("http://www.omdbapi.com/?i=$imdbID&apikey=$apiKey");
 
-  final response = await http.get(apiUrl);
+    final response = await http.get(apiUrl);
 
-  if (response.statusCode == 200) {
-    final data = json.decode(response.body);
-    final movieModel = MovieModel.fromJson(data);
-    
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => MovieDetailsScreen_OMDb(movieModel),
-      ),
-    );
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final movieModel = MovieModel.fromJson(data);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MovieDetailsScreen_OMDb(movieModel),
+        ),
+      );
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Movie Search"),
+        title: new Center(
+            child: new Text("Movie Search", textAlign: TextAlign.center)),
+        automaticallyImplyLeading: false,
       ),
       body: Column(
         children: [
@@ -84,7 +86,22 @@ void onSuggestionTapped(Map<String, dynamic> movie) async {
                   fetchSuggestions(text);
                 });
               },
-              decoration: InputDecoration(labelText: "Enter a movie title"),
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.movie),
+                prefixIconColor:
+                    MaterialStateColor.resolveWith((Set<MaterialState> states) {
+                  if (states.contains(MaterialState.focused)) {
+                    return Colors.blue;
+                  }
+                  if (states.contains(MaterialState.error)) {
+                    return Colors.red;
+                  }
+                  return Colors.grey;
+                }),
+                labelText: "Enter a movie title",
+                hintText: 'ex. Spider-Man',
+                border: OutlineInputBorder(),
+              ),
             ),
           ),
           if (suggestions.isNotEmpty)
@@ -93,8 +110,11 @@ void onSuggestionTapped(Map<String, dynamic> movie) async {
                 itemCount: suggestions.length,
                 itemBuilder: (context, index) {
                   final title = suggestions[index]['Title'];
+                  final year = suggestions[index]['Year'];
+                  final poster = suggestions[index]['Poster'];
                   return ListTile(
                     title: Text(title),
+                    trailing: Text(year),
                     onTap: () => onSuggestionTapped(suggestions[index]),
                   );
                 },
@@ -105,7 +125,6 @@ void onSuggestionTapped(Map<String, dynamic> movie) async {
     );
   }
 }
-
 
 class Debouncer {
   final int milliseconds;
