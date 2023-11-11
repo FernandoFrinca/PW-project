@@ -227,12 +227,11 @@ class _MovieDetailsScreen_OMDbState extends State<MovieDetailsScreen_OMDb> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          if (userType == 0) {
+                          if (userType != 0) {
                             String inputText = _textEditingController.text;
                             if (inputText != "") {
                               setState(() {
-                                comments
-                                    .add("$userType${username!}\n\n$inputText");
+                                comments.add("${username!}\n\n$inputText");
                               });
                               FirebaseFirestore.instance
                                   .collection("movies")
