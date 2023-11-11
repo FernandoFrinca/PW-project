@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cinemavillage/constants.dart';
 import 'package:cinemavillage/screens/details_screen_movies.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class TrendingSlider extends StatelessWidget {
@@ -32,7 +33,7 @@ class TrendingSlider extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      DetailsScreenMovies(movie: snapshot.data[itemIndex]),
+                      DetailsScreenMovies(movies: snapshot.data[itemIndex]),
                 ),
               );
             },
@@ -80,7 +81,7 @@ class MoviesSlider extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        DetailsScreenMovies(movie: snapshot.data[index]),
+                        DetailsScreenMovies(movies: snapshot.data[index]),
                   ),
                 );
               },
