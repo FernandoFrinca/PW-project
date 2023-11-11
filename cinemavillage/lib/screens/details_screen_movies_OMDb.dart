@@ -1,17 +1,86 @@
+// ignore: file_names
 import 'package:cinemavillage/models/movie_model_OMDb.dart';
 import 'package:cinemavillage/reusable_widgets/reusable_widget.dart';
 import 'package:cinemavillage/screens/Main_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cinemavillage/reusable_widgets/BackButton.dart';
 
-class MovieDetailsScreen_OMDb extends StatelessWidget {
-  final MovieModel movieDetails;
+// ignore: camel_case_types
+class MovieDetailsScreen_OMDb extends StatefulWidget {
+  final MovieModel movieDetail;
 
-  MovieDetailsScreen_OMDb(this.movieDetails);
+  MovieDetailsScreen_OMDb(this.movieDetail);
 
   @override
+  _MovieDetailsScreen_OMDbState createState() =>
+      _MovieDetailsScreen_OMDbState();
+}
+
+class _MovieDetailsScreen_OMDbState extends State<MovieDetailsScreen_OMDb> {
+  List coms = [];
+  String? mName;
+  List<String> comments = [];
+  int _isAdmin = 0;
+  TextEditingController _textEditingController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  String? username;
+
+  Future<void> _createDoc() async {
+    String docId = widget.movieDetail.title;
+    DocumentSnapshot docSnapshot =
+        await FirebaseFirestore.instance.collection("movies").doc(docId).get();
+
+    if (!docSnapshot.exists) {
+      await FirebaseFirestore.instance.collection("movies").doc(docId).set({
+        'movieName': widget.movieDetail.title,
+        'userComent': coms,
+      });
+    } else {}
+  }
+
+  Future _getDataFromDatabaseUser() async {
+    print(widget.movieDetail.title);
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((snapshot) async {
+      if (snapshot.exists) {
+        setState(() {
+          username = snapshot.data()!["username"];
+          _isAdmin = snapshot.data()!["isAdmin"];
+        });
+      }
+    });
+    await FirebaseFirestore.instance
+        .collection("movies")
+        .doc(widget.movieDetail.title)
+        .get()
+        .then((snapshot) async {
+      if (snapshot.exists) {
+        setState(() {
+          coms = snapshot.data()!["userComent"];
+          mName = snapshot.data()!["movieName"];
+        });
+      }
+    });
+    comments = await coms.map((element) => element.toString()).toList();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _createDoc();
+    _getDataFromDatabaseUser();
+  }
+
+  @override
+  MovieModel? movieDetails;
   Widget build(BuildContext context) {
+    movieDetails = widget.movieDetail;
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -22,7 +91,7 @@ class MovieDetailsScreen_OMDb extends StatelessWidget {
             pinned: true,
             floating: true,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text(movieDetails.title ?? 'No title',
+              title: Text(movieDetails!.title ?? 'No title',
                   style: GoogleFonts.aBeeZee(
                       fontSize: 17, fontWeight: FontWeight.w600)),
               background: ClipRRect(
@@ -31,7 +100,7 @@ class MovieDetailsScreen_OMDb extends StatelessWidget {
                   bottomRight: Radius.circular(24),
                 ),
                 child: Image.network(
-                  movieDetails.poster,
+                  movieDetails!.poster,
                   filterQuality: FilterQuality.high,
                   alignment: Alignment.topCenter,
                   fit: BoxFit.cover,
@@ -64,7 +133,7 @@ class MovieDetailsScreen_OMDb extends StatelessWidget {
                                 width: 5,
                               ),
                               Text(
-                                movieDetails.year ?? 'N/A',
+                                movieDetails!.year ?? 'N/A',
                                 style: GoogleFonts.roboto(
                                   fontSize: 17,
                                   fontWeight: FontWeight.bold,
@@ -74,7 +143,7 @@ class MovieDetailsScreen_OMDb extends StatelessWidget {
                           ),
                           Text(
                             textAlign: TextAlign.center,
-                            movieDetails.genre,
+                            movieDetails!.genre,
                             style: GoogleFonts.roboto(
                                 fontSize: 17, fontWeight: FontWeight.bold),
                           ),
@@ -88,13 +157,13 @@ class MovieDetailsScreen_OMDb extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       for (int i = 0;
-                          i < movieDetails.ratings.length && i < 3;
+                          i < movieDetails!.ratings.length && i < 3;
                           i++)
                         Column(children: [
                           Container(
                               width: MediaQuery.of(context).size.width / 3 - 10,
                               child: Text(
-                                movieDetails.ratings[i]['Value'],
+                                movieDetails!.ratings[i]['Value'],
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.roboto(
                                   fontSize: 20,
@@ -104,7 +173,7 @@ class MovieDetailsScreen_OMDb extends StatelessWidget {
                           Container(
                               width: MediaQuery.of(context).size.width / 3 - 10,
                               child: Text(
-                                movieDetails.ratings[i]['Source'],
+                                movieDetails!.ratings[i]['Source'],
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.roboto(
                                   fontSize: 12,
@@ -118,28 +187,93 @@ class MovieDetailsScreen_OMDb extends StatelessWidget {
                     height: 20,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                    Text('Overview',
-                        style: GoogleFonts.openSans(
-                            fontSize: 25, fontWeight: FontWeight.w800)),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    if (userType == 1)
-                      favoriteButton(
-                        name: movieDetails.title,
-                      ),
-                      
-                  ]),
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text('Overview',
+                            style: GoogleFonts.openSans(
+                                fontSize: 25, fontWeight: FontWeight.w800)),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        if (userType == 1)
+                          favoriteButton(
+                            name: movieDetails!.title,
+                          ),
+                      ]),
                   const SizedBox(
                     height: 10,
                   ),
                   Text(
-                    movieDetails.plot ?? 'No plot',
+                    movieDetails!.plot ?? 'No plot',
                     style: GoogleFonts.roboto(
                         fontSize: 17, fontWeight: FontWeight.w400),
                     textAlign: TextAlign.justify,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                          child: TextField(
+                        controller: _textEditingController,
+                        decoration: const InputDecoration(
+                          hintText: 'Type here...',
+                        ),
+                      )),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          if (userType == 0) {
+                            String inputText = _textEditingController.text;
+                            if (inputText != "") {
+                              setState(() {
+                                comments
+                                    .add("$userType${username!}\n\n$inputText");
+                              });
+                              FirebaseFirestore.instance
+                                  .collection("movies")
+                                  .doc(movieDetails!.title)
+                                  .update({
+                                'userComent': comments,
+                              });
+                            }
+                            _textEditingController.clear();
+                          } else {
+                            _textEditingController.clear();
+                          }
+                        },
+                        child: const Text(
+                          'Submit',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 241, 81, 37),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CommentsList(
+                    comments: comments,
+                    onDelete: (index) {
+                      String commentToDelete = comments[index];
+                      setState(() {
+                        comments.removeAt(index);
+                      });
+                      FirebaseFirestore.instance
+                          .collection("movies")
+                          .doc(movieDetails!.title)
+                          .update({
+                        'userComent': FieldValue.arrayRemove([commentToDelete]),
+                      });
+                    },
+                    isAdmin: _isAdmin,
+                    userType: userType!,
                   ),
                 ],
               ),

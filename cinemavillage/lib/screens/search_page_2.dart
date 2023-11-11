@@ -1,5 +1,6 @@
 import 'package:cinemavillage/models/movie_model_OMDb.dart';
 import 'package:cinemavillage/screens/details_screen_movies_OMDb.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -59,6 +60,7 @@ class _MovieSearchState extends State<MovieSearch> {
       final data = json.decode(response.body);
       final movieModel = MovieModel.fromJson(data);
 
+      // ignore: use_build_context_synchronously
       Navigator.push(
         context,
         MaterialPageRoute(

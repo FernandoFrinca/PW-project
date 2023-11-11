@@ -314,7 +314,7 @@ class ListElement extends StatelessWidget {
           if (data['Response'] == 'True') {
             // Check if the response is successful
             firstImdbID = data['Search'][0]['imdbID'];
-          } 
+          }
         }
 
         final apiUrl2 =
@@ -417,7 +417,6 @@ class ListElementAdmin extends StatelessWidget {
       padding: const EdgeInsets.all(11),
       child: Container(
         height: 80,
-        color: Colors.white30,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -534,6 +533,80 @@ class ListElementAdmin extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class CommentsList extends StatelessWidget {
+  final List<String> comments;
+  final Function(int index) onDelete;
+  final int isAdmin;
+  final int userType;
+  const CommentsList({
+    Key? key,
+    required this.comments,
+    required this.onDelete,
+    required this.isAdmin,
+    required this.userType,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: comments.map((comment) {
+          int index = comments.indexOf(comment);
+          return Stack(
+            alignment: Alignment.topRight,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                margin:
+                    const EdgeInsets.symmetric(vertical: 6.0, horizontal: 6.0),
+                padding: const EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 26, 26, 26),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: Color.fromARGB(255, 26, 26, 26).withOpacity(0.5),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 1,
+                      blurRadius: 2,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
+                ),
+                child: Text(
+                  comment,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 4,
+                right: 4,
+                child: (isAdmin == 1 && userType != 0)
+                    ? Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.close, color: Colors.red),
+                            onPressed: () => onDelete(index),
+                          ),
+                          Text(""),
+                        ],
+                      )
+                    : SizedBox(), // If isAdmin is not 1, display an empty SizedBox
+              ),
+            ],
+          );
+        }).toList(),
       ),
     );
   }
