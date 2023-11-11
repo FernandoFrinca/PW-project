@@ -204,7 +204,6 @@ class _DetailsScreenMovie extends State<DetailsScreenMovies> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          // Handle the submit button press
                           if (userType != 0) {
                             String inputText = _textEditingController.text;
                             if (inputText != "") {

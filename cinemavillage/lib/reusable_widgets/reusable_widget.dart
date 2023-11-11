@@ -602,7 +602,7 @@ class CommentsList extends StatelessWidget {
                           Text(""),
                         ],
                       )
-                    : SizedBox(), // If isAdmin is not 1, display an empty SizedBox
+                    : SizedBox(),
               ),
             ],
           );
