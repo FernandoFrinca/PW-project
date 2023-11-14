@@ -223,7 +223,7 @@ class _Profile_screen extends State<Profile_screen> {
                           child: const Text(
                             'Edit Profile',
                             style: TextStyle(
-                                color: Color.fromARGB(255, 241, 81, 37)),
+                                color: Color.fromARGB(255, 25, 25, 25)),
                           ),
                         ),
                         const SizedBox(
@@ -243,7 +243,7 @@ class _Profile_screen extends State<Profile_screen> {
                           child: const Text(
                             "Logout",
                             style: TextStyle(
-                                color: Color.fromARGB(255, 241, 81, 37)),
+                                color: Color.fromARGB(255, 25, 25, 25)),
                           ),
                         ),
                       ],

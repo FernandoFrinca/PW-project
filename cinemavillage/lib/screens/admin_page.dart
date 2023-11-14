@@ -63,11 +63,11 @@ class _Admin_screen extends State<Admin_screen> {
         centerTitle: true,
         backgroundColor: Color.fromARGB(255, 25, 25, 25),
         title: SizedBox(
-          width: 270,
+          width: 170,
           height: 100,
           child: Image.asset('assets/images/Cinema_village_N1.png'),
         ),
-        toolbarHeight: 65,
+        toolbarHeight: 55,
         elevation: 0.0,
         automaticallyImplyLeading: false,
       ),
@@ -87,7 +87,7 @@ class _Admin_screen extends State<Admin_screen> {
                         children: snapshot.data!.docs
                             .map<Widget>((DocumentSnapshot document) {
                           return Card(
-                            margin: const EdgeInsets.all(8.0),
+                            margin: const EdgeInsets.all(7.0),
                             child: ListElementAdmin(
                               email: "Email: " + document['email'],
                               username: "User: " + document['username'],
