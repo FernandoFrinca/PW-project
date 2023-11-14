@@ -56,7 +56,7 @@ class _MovieDetailsScreen_OMDbState extends State<MovieDetailsScreen_OMDb> {
         setState(() {
           username = snapshot.data()!["username"];
           _isAdmin = snapshot.data()!["isAdmin"];
-           _uID = snapshot.data()!["uID"];
+          _uID = snapshot.data()!["uID"];
         });
       }
     });
@@ -223,103 +223,111 @@ class _MovieDetailsScreen_OMDbState extends State<MovieDetailsScreen_OMDb> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      RatingBar.builder(
-                        initialRating: _rating,
-                        minRating: 0,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemCount: 5,
-                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                        itemBuilder: (context, _) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                        onRatingUpdate: (rating) async {
-                          setState(() {
-                            _rating = rating;
-                          });
-                          // Save the rating to the 'movies' collection in Firebase
-                          await FirebaseFirestore.instance
-                              .collection('movies')
-                              .doc(mName)
-                              .set(
-                            {
-                              'ratings': {
-                                _uID: _rating,
+                  if (userType == 1)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        RatingBar.builder(
+                          initialRating: _rating,
+                          minRating: 0,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                          itemBuilder: (context, _) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          onRatingUpdate: (rating) async {
+                            setState(() {
+                              _rating = rating;
+                            });
+                            // Save the rating to the 'movies' collection in Firebase
+                            await FirebaseFirestore.instance
+                                .collection('movies')
+                                .doc(mName)
+                                .set(
+                              {
+                                'ratings': {
+                                  _uID: _rating,
+                                },
                               },
-                            },
-                            SetOptions(merge: true),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+                              SetOptions(merge: true),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   Row(
                     children: [
                       SizedBox(
-                        height: 70,
+                        height: 60,
                       ),
                       Text(
                         "Comments:",
                         style: GoogleFonts.openSans(
-                          fontSize: 25, fontWeight: FontWeight.w800),
+                            fontSize: 25, fontWeight: FontWeight.w800),
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                          child: TextField(
-                        controller: _textEditingController,
-                        decoration: const InputDecoration(
-                          hintText: 'Type here...',
+                  if (userType == 1)
+                    Column(
+                      children: [
+                        const SizedBox(
+                          height: 10,
                         ),
-                      )),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          if (userType != 0) {
-                            String inputText = _textEditingController.text;
-                            if (inputText != "") {
-                              setState(() {
-                                comments.add("${username!}\n\n$inputText");
-                              });
-                              FirebaseFirestore.instance
-                                  .collection("movies")
-                                  .doc(movieDetails!.title)
-                                  .update({
-                                'userComent': comments,
-                              });
-                            }
-                            _textEditingController.clear();
-                          } else {
-                            _textEditingController.clear();
-                          }
-                        },
-                        child: const Text(
-                          'Submit',
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 241, 81, 37),
-                          ),
+                        Row(
+                          children: [
+                            Expanded(
+                                child: TextField(
+                              controller: _textEditingController,
+                              decoration: const InputDecoration(
+                                hintText: 'Type here...',
+                              ),
+                            )),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                if (userType != 0) {
+                                  String inputText =
+                                      _textEditingController.text;
+                                  if (inputText != "") {
+                                    setState(() {
+                                      comments
+                                          .add("${username!}\n\n$inputText");
+                                    });
+                                    FirebaseFirestore.instance
+                                        .collection("movies")
+                                        .doc(movieDetails!.title)
+                                        .update({
+                                      'userComent': comments,
+                                    });
+                                  }
+                                  _textEditingController.clear();
+                                } else {
+                                  _textEditingController.clear();
+                                }
+                              },
+                              child: const Text(
+                                'Submit',
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    ),
                   CommentsList(
                     comments: comments,
                     onDelete: (index) {

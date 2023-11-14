@@ -170,40 +170,41 @@ class _DetailsScreenMovie extends State<DetailsScreenMovies> {
                       ],
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      RatingBar.builder(
-                        initialRating: _rating,
-                        minRating: 0,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemCount: 5,
-                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                        itemBuilder: (context, _) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                        onRatingUpdate: (rating) async {
-                          setState(() {
-                            _rating = rating;
-                          });
-                          // Save the rating to the 'movies' collection in Firebase
-                          await FirebaseFirestore.instance
-                              .collection('movies')
-                              .doc(mName)
-                              .set(
-                            {
-                              'ratings': {
-                                _uID: _rating,
+                  if (userType == 1)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        RatingBar.builder(
+                          initialRating: _rating,
+                          minRating: 0,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                          itemBuilder: (context, _) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          onRatingUpdate: (rating) async {
+                            setState(() {
+                              _rating = rating;
+                            });
+                            // Save the rating to the 'movies' collection in Firebase
+                            await FirebaseFirestore.instance
+                                .collection('movies')
+                                .doc(mName)
+                                .set(
+                              {
+                                'ratings': {
+                                  _uID: _rating,
+                                },
                               },
-                            },
-                            SetOptions(merge: true),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+                              SetOptions(merge: true),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -231,6 +232,8 @@ class _DetailsScreenMovie extends State<DetailsScreenMovies> {
                       ),
                     ],
                   ),
+                  if (userType == 1)
+                  Column(children: [
                   Row(
                     children: [
                       Expanded(
@@ -271,7 +274,7 @@ class _DetailsScreenMovie extends State<DetailsScreenMovies> {
                         child: const Text(
                           'Submit',
                           style: TextStyle(
-                            color: Color.fromARGB(255, 241, 81, 37),
+                            color: Colors.white70,
                           ),
                         ),
                       ),
@@ -280,6 +283,7 @@ class _DetailsScreenMovie extends State<DetailsScreenMovies> {
                   const SizedBox(
                     height: 20,
                   ),
+                  ],),
                   CommentsList(
                     comments: comments,
                     onDelete: (index) {
