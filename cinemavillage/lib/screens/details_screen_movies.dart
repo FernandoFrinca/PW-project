@@ -6,6 +6,7 @@ import 'package:cinemavillage/reusable_widgets/reusable_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cinemavillage/screens/Main_page.dart';
 
@@ -20,11 +21,14 @@ class _DetailsScreenMovie extends State<DetailsScreenMovies> {
   Movie? movie;
   List coms = [];
   String? mName;
+  Map? rating;
+  double _rating = 0;
   List<String> comments = [];
   int _isAdmin = 0;
   TextEditingController _textEditingController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String? username;
+  String? _uID;
 
   Future<void> _createDoc() async {
     String docId = widget.movies.title;
@@ -50,6 +54,7 @@ class _DetailsScreenMovie extends State<DetailsScreenMovies> {
         setState(() {
           username = snapshot.data()!["username"];
           _isAdmin = snapshot.data()!["isAdmin"];
+          _uID = snapshot.data()!["uID"];
         });
       }
     });
@@ -62,6 +67,12 @@ class _DetailsScreenMovie extends State<DetailsScreenMovies> {
         setState(() {
           coms = snapshot.data()!["userComent"];
           mName = snapshot.data()!["movieName"];
+          var ratings = snapshot.data()!["ratings"];
+          if (ratings != null && ratings[_uID] != null) {
+            _rating = ratings[_uID].toDouble();
+          } else {
+            _rating = 0;
+          }
         });
       }
     });
@@ -159,6 +170,40 @@ class _DetailsScreenMovie extends State<DetailsScreenMovies> {
                       ],
                     ),
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      RatingBar.builder(
+                        initialRating: _rating,
+                        minRating: 0,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                        itemBuilder: (context, _) => Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        onRatingUpdate: (rating) async {
+                          setState(() {
+                            _rating = rating;
+                          });
+                          // Save the rating to the 'movies' collection in Firebase
+                          await FirebaseFirestore.instance
+                              .collection('movies')
+                              .doc(mName)
+                              .set(
+                            {
+                              'ratings': {
+                                _uID: _rating,
+                              },
+                            },
+                            SetOptions(merge: true),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -174,14 +219,15 @@ class _DetailsScreenMovie extends State<DetailsScreenMovies> {
                         fontSize: 17, fontWeight: FontWeight.w400),
                     textAlign: TextAlign.justify,
                   ),
-                  const Row(
+                  Row(
                     children: [
                       SizedBox(
                         height: 70,
                       ),
                       Text(
                         "Comments:",
-                        style: TextStyle(fontSize: 25),
+                        style: GoogleFonts.openSans(
+                            fontSize: 25, fontWeight: FontWeight.w800),
                       ),
                     ],
                   ),
