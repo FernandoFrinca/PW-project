@@ -1,9 +1,5 @@
 # PW (Programare Web) Project
 
-## Overview
-
-This is the README for the PW (Programare Web) project. The project includes several pages, each serving a specific purpose.
-
 ## Screenshots
 
 ### Login Page
